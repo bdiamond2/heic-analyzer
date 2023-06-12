@@ -5,6 +5,7 @@ import os
 import pprint
 import math
 
+
 # takes the path of an HEIC image and returns the datetime and geotag
 # as a lat/long in a list
 def heic_dt_gps(image_path):
@@ -19,12 +20,15 @@ def heic_dt_gps(image_path):
     # EXIF reference:
     # https://exiv2.org/tags.html
     # dt = exif_dict['0th'][306].decode('utf-8')
-    dt = datetime.strptime(exif_dict['0th'][306].decode('utf-8'), "%Y:%m:%d %H:%M:%S")
+    dt = datetime.strptime(exif_dict['0th'][306].decode(
+        'utf-8'), "%Y:%m:%d %H:%M:%S")
     lat_long = decode_gps(exif_dict['GPS'])
     return [dt, lat_long]
 
 # takes the 'GPS' tag of EXIF data and returns it as a simple
 # decimal lat/long list
+
+
 def decode_gps(gps_tag):
     lat_ref = gps_tag[1]
     lat = gps_tag[2]
@@ -50,13 +54,12 @@ def decode_gps(gps_tag):
 def exif_dms_to_dec(dms):
     return (dms[0][0] / dms[0][1]) + (dms[1][0] / dms[1][1])/60 + (dms[2][0] / dms[2][1])/3600
 
+
 def list_files(path):
     fns = []
     for fn in os.listdir(path):
         fns.append(os.path.join(path, fn))
     return fns
-
-img = "IMG_7589.HEIC"
 
 batch1 = list_files('test_heics/batch_1')
 batch2 = list_files('test_heics/batch_2')
